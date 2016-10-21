@@ -45,6 +45,7 @@
 
 
 #include <QtCore/qmetatype.h>
+#include <QVariantMap>
 
 QT_BEGIN_NAMESPACE
 
@@ -89,11 +90,16 @@ public:
 
     virtual QVariant handle() const;
 
+    QVariantMap availableMetaData() const;
+    QVariant metaData(const QString &key) const;
+    void setMetaData(const QString &key, const QVariant &value);
+
 protected:
     QAbstractVideoBuffer(QAbstractVideoBufferPrivate &dd, HandleType type);
 
     QAbstractVideoBufferPrivate *d_ptr;  // For expansion, not used currently
     HandleType m_type;
+    QVariantMap m_metadata;
 
 private:
     Q_DECLARE_PRIVATE(QAbstractVideoBuffer)

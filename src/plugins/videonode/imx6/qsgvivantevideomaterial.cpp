@@ -213,16 +213,22 @@ GLuint QSGVivanteVideoMaterial::vivanteMapping(QVideoFrame vF)
                 const uchar *constBits = vF.bits();
                 void *bits = (void*)constBits;
 
+                GLuint physical = ~0U;
+                QVariant p = vF.metaData("imx_phys_addr");
+                if (p.isValid()) {
+                    physical = p.toUInt();
+                }
 #ifdef QT_VIVANTE_VIDEO_DEBUG
                 qDebug() << Q_FUNC_INFO
                          << "new texture, texId: " << tmpTexId
                          << "; constBits: " << constBits
+                         << "; physical: " << physical
                          << "; actual/full width: " << vF.width() << "/" << fullWidth
                          << "; actual/full height: " << vF.height() << "/" << fullHeight
                          << "; UV scale: U " << uScale << " V " << vScale;
 #endif
 
-                GLuint physical = ~0U;
+
 
                 glBindTexture(GL_TEXTURE_2D, tmpTexId);
                 glTexDirectVIVMap_LOCAL(GL_TEXTURE_2D,

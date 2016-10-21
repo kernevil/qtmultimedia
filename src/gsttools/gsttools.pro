@@ -20,6 +20,14 @@ qtConfig(resourcepolicy) {
     QMAKE_USE += libresourceqt5
 }
 
+config_gpu_vivante {
+    packagesExist(gstimxcommon) {
+        message(Enabling GStreamer IMX extensions)
+        DEFINES += GST_IMX_EXTENSIONS
+        PKGCONFIG += gstimxcommon
+    }
+}
+
 # Header files must go inside source directory of a module
 # to be installed by syncqt.
 INCLUDEPATH += ../multimedia/gsttools_headers/

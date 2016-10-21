@@ -39,6 +39,10 @@
 
 #include "qgstvideobuffer_p.h"
 
+#ifdef GST_IMX_EXTENSIONS
+#include <gstreamer-1.0/gst/allocators/imx/phys_mem_meta.h>
+#endif
+
 QT_BEGIN_NAMESPACE
 
 #if GST_CHECK_VERSION(1,0,0)
@@ -54,6 +58,13 @@ QGstVideoBuffer::QGstVideoBuffer(GstBuffer *buffer, int bytesPerLine)
     , m_mode(NotMapped)
 {
     gst_buffer_ref(m_buffer);
+
+#ifdef GST_IMX_EXTENSIONS
+    GstImxPhysMemMeta *meta = GST_IMX_PHYS_MEM_META_GET(buffer);
+    if (meta && meta->phys_addr != 0) {
+        setMetaData("imx_phys_addr", (quint32)meta->phys_addr);
+    }
+#endif
 }
 
 #if GST_CHECK_VERSION(1,0,0)
@@ -74,6 +85,13 @@ QGstVideoBuffer::QGstVideoBuffer(GstBuffer *buffer, int bytesPerLine,
     , m_handle(handle)
 {
     gst_buffer_ref(m_buffer);
+
+#ifdef GST_IMX_EXTENSIONS
+    GstImxPhysMemMeta *meta = GST_IMX_PHYS_MEM_META_GET(buffer);
+    if (meta && meta->phys_addr != 0) {
+        setMetaData("imx_phys_addr", (quint32)meta->phys_addr);
+    }
+#endif
 }
 
 QGstVideoBuffer::~QGstVideoBuffer()

@@ -269,6 +269,24 @@ QVariant QAbstractVideoBuffer::handle() const
     return QVariant();
 }
 
+QVariantMap QAbstractVideoBuffer::availableMetaData() const
+{
+    return m_metadata;
+}
+
+QVariant QAbstractVideoBuffer::metaData(const QString &key) const
+{
+    return m_metadata.value(key);
+}
+
+void QAbstractVideoBuffer::setMetaData(const QString &key, const QVariant &value)
+{
+    if (!value.isNull())
+        m_metadata.insert(key, value);
+    else
+        m_metadata.remove(key);
+}
+
 
 int QAbstractPlanarVideoBufferPrivate::map(
         QAbstractVideoBuffer::MapMode mode, int *numBytes, int bytesPerLine[4], uchar *data[4])

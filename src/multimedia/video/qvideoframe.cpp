@@ -317,6 +317,12 @@ QVideoFrame::QVideoFrame(
     : d(new QVideoFramePrivate(size, format))
 {
     d->buffer = buffer;
+    if (buffer) {
+        for (auto it = buffer->availableMetaData().cbegin(),
+             end = buffer->availableMetaData().cend(); it != end; ++it) {
+            d->metadata.insert(it.key(), it.value());
+        }
+    }
 }
 
 /*!
